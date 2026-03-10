@@ -4,11 +4,15 @@ import PackageDescription
 
 let package = Package(
     name: "pasfo",
+    defaultLocalization: "en",
     platforms: [.macOS(.v14)],
     targets: [
         .executableTarget(
             name: "pasfo",
             path: "Sources/pasfo",
+            resources: [
+                .process("Resources")
+            ],
             swiftSettings: [.swiftLanguageMode(.v5)]
         ),
         .testTarget(

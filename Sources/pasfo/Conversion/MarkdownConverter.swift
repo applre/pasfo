@@ -153,7 +153,7 @@ struct MarkdownConverter {
 
     /// 渲染内联 Markdown 语法：bold, italic, code, links, strikethrough
     static func renderInline(_ text: String) -> String {
-        var result = escapeHTML(text)
+        var result = text.escapingHTML()
         // Bold: **text** or __text__
         result = result.replacingOccurrences(
             of: #"\*\*(.+?)\*\*"#, with: "<strong>$1</strong>",
@@ -188,7 +188,7 @@ struct MarkdownConverter {
     // MARK: - Code block
 
     private static func renderCodeBlock(_ code: String, language: String) -> String {
-        let escaped = escapeHTML(code)
+        let escaped = code.escapingHTML()
         return """
         <pre style="background:#f5f5f5;padding:12px;border-radius:6px;overflow-x:auto;font-size:13px;line-height:1.4;"><code>\(escaped)</code></pre>
         """
@@ -334,11 +334,4 @@ struct MarkdownConverter {
         return result
     }
 
-    // MARK: - Helpers
-
-    private static func escapeHTML(_ text: String) -> String {
-        text.replacingOccurrences(of: "&", with: "&amp;")
-            .replacingOccurrences(of: "<", with: "&lt;")
-            .replacingOccurrences(of: ">", with: "&gt;")
-    }
 }

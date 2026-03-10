@@ -1,0 +1,36 @@
+/* Badge */
+"badge.detected" = "Detected";
+
+/* Format labels */
+"format.boxDrawingTable" = "Box-drawing Table";
+"format.markdownTable" = "Markdown Table";
+"format.markdownMixed" = "Markdown Mixed";
+"format.html" = "Rich Text";
+"format.terminalMixed" = "Terminal Mixed";
+"format.codeSnippet" = "Code Snippet";
+"format.plainText" = "Plain Text";
+
+/* Action labels */
+"action.toAppleNotesHTML" = "Rich Text";
+"action.toMarkdownTable" = "Markdown Table";
+"action.toMarkdown" = "Markdown";
+"action.toPlainText" = "Plain Text";
+"action.toAppleNotesHighlighted" = "Rich Text (Highlight)";
+
+/* Content view */
+"clipboard.empty" = "Clipboard is empty";
+"clipboard.plainTextNoConvert" = "Plain text, no conversion needed";
+
+/* Hints */
+"hint.keyboardShortcut" = "Press number keys to convert";
+
+/* Footer */
+"footer.about" = "About Pasfo";
+"footer.quit" = "Quit Pasfo";
+
+/* Success messages */
+"success.richText" = "Converted to Rich Text, ready to paste";
+"success.markdownTable" = "Converted to Markdown table";
+"success.markdown" = "Converted to Markdown";
+"success.plainText" = "Converted to plain text";
+"success.highlighted" = "Converted to syntax-highlighted Rich Text";

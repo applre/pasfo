@@ -14,7 +14,7 @@ struct BoxDrawingConverter {
                 ? "style=\"border:1px solid #ccc;padding:6px 12px;background:#f5f5f5;font-weight:600;\""
                 : "style=\"border:1px solid #ccc;padding:6px 12px;\""
             for cell in row {
-                html += "    <\(tag) \(style)>\(escapeHTML(cell))</\(tag)>\n"
+                html += "    <\(tag) \(style)>\(cell.escapingHTML())</\(tag)>\n"
             }
             html += "  </tr>\n"
         }
@@ -162,12 +162,6 @@ struct BoxDrawingConverter {
     }
 
     // MARK: - Helpers
-
-    private static func escapeHTML(_ text: String) -> String {
-        text.replacingOccurrences(of: "&", with: "&amp;")
-            .replacingOccurrences(of: "<", with: "&lt;")
-            .replacingOccurrences(of: ">", with: "&gt;")
-    }
 
     static func wrapInHTML(_ body: String) -> String {
         """

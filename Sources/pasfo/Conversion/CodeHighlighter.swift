@@ -4,7 +4,7 @@ import Foundation
 struct CodeHighlighter {
     /// 将代码转换为带简单语法高亮的 HTML
     static func toHTML(_ code: String, language: String = "") -> String {
-        let escaped = escapeHTML(code)
+        let escaped = code.escapingHTMLAttribute()
         let highlighted = applyHighlighting(escaped, language: language)
 
         let html = """
@@ -62,12 +62,6 @@ struct CodeHighlighter {
         return result
     }
 
-    private static func escapeHTML(_ text: String) -> String {
-        text.replacingOccurrences(of: "&", with: "&amp;")
-            .replacingOccurrences(of: "<", with: "&lt;")
-            .replacingOccurrences(of: ">", with: "&gt;")
-            .replacingOccurrences(of: "\"", with: "&quot;")
-    }
 }
 
 /// ANSI 转义符清理

@@ -1,10 +1,6 @@
 import Foundation
 
 struct FormatDetector {
-    // Box-drawing characters: ─│┌┐└┘├┤┬┴┼═║╔╗╚╝╠╣╦╩╬
-    private static let boxDrawingRange = Character("\u{2500}")...Character("\u{257F}")
-    private static let boxDrawingDoubleRange = Character("\u{2550}")...Character("\u{256C}")
-
     /// 检测文本格式，按优先级从高到低
     static func detect(_ text: String, hasHTMLPasteboard: Bool = false) -> DetectedFormat {
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)

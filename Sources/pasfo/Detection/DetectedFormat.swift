@@ -12,13 +12,13 @@ enum DetectedFormat: Equatable {
 
     var label: String {
         switch self {
-        case .boxDrawingTable: return "Box-drawing 表格"
-        case .markdownTable: return "Markdown 表格"
-        case .markdownMixed: return "Markdown 混合内容"
-        case .html: return "HTML / Rich Text"
-        case .terminalMixed: return "终端混合内容"
-        case .codeSnippet: return "代码片段"
-        case .plainText: return "纯文本"
+        case .boxDrawingTable: return String(localized: "format.boxDrawingTable", bundle: .module)
+        case .markdownTable: return String(localized: "format.markdownTable", bundle: .module)
+        case .markdownMixed: return String(localized: "format.markdownMixed", bundle: .module)
+        case .html: return String(localized: "format.html", bundle: .module)
+        case .terminalMixed: return String(localized: "format.terminalMixed", bundle: .module)
+        case .codeSnippet: return String(localized: "format.codeSnippet", bundle: .module)
+        case .plainText: return String(localized: "format.plainText", bundle: .module)
         }
     }
 
@@ -34,18 +34,6 @@ enum DetectedFormat: Equatable {
         }
     }
 
-    var badgeColor: String {
-        switch self {
-        case .boxDrawingTable: return "blue"
-        case .markdownTable: return "blue"
-        case .markdownMixed: return "purple"
-        case .html: return "orange"
-        case .terminalMixed: return "teal"
-        case .codeSnippet: return "green"
-        case .plainText: return "gray"
-        }
-    }
-
     /// 根据格式返回可用的转换操作
     var availableActions: [ConvertAction] {
         switch self {
@@ -54,7 +42,7 @@ enum DetectedFormat: Equatable {
         case .markdownTable:
             return [.toAppleNotesHTML, .toPlainText]
         case .markdownMixed:
-            return [.toAppleNotesHTML, .cleanANSI]
+            return [.toAppleNotesHTML, .toPlainText]
         case .html:
             return [.toMarkdown, .toPlainText]
         case .terminalMixed:
@@ -73,17 +61,25 @@ enum ConvertAction: Equatable {
     case toMarkdownTable
     case toMarkdown
     case toPlainText
-    case cleanANSI
     case toAppleNotesHighlighted
 
     var label: String {
         switch self {
-        case .toAppleNotesHTML: return "→ Apple Notes"
-        case .toMarkdownTable: return "→ Markdown 表格"
-        case .toMarkdown: return "→ Markdown"
-        case .toPlainText: return "→ 纯文本"
-        case .cleanANSI: return "→ 清理 ANSI"
-        case .toAppleNotesHighlighted: return "→ Apple Notes (高亮)"
+        case .toAppleNotesHTML: return String(localized: "action.toAppleNotesHTML", bundle: .module)
+        case .toMarkdownTable: return String(localized: "action.toMarkdownTable", bundle: .module)
+        case .toMarkdown: return String(localized: "action.toMarkdown", bundle: .module)
+        case .toPlainText: return String(localized: "action.toPlainText", bundle: .module)
+        case .toAppleNotesHighlighted: return String(localized: "action.toAppleNotesHighlighted", bundle: .module)
+        }
+    }
+
+    var targetApps: String {
+        switch self {
+        case .toAppleNotesHTML: return "Apple Notes, Obsidian"
+        case .toMarkdownTable: return "Obsidian, Notion"
+        case .toMarkdown: return "Obsidian, Notion"
+        case .toPlainText: return ""
+        case .toAppleNotesHighlighted: return "Apple Notes, Obsidian"
         }
     }
 

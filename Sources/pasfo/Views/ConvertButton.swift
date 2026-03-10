@@ -5,39 +5,40 @@ struct ConvertButton: View {
     let keyHint: String
     let onConvert: () -> Void
 
+    @State private var isHovered = false
+
     var body: some View {
         Button(action: onConvert) {
-            HStack(spacing: 6) {
+            HStack(spacing: 0) {
                 Text(action.label)
-                    .font(.system(size: 13, weight: action.isRecommended ? .semibold : .regular))
+                    .font(action.isRecommended ? .body.weight(.semibold) : .body)
+                if !action.targetApps.isEmpty {
+                    Text("  \(action.targetApps)")
+                        .font(.caption)
+                        .foregroundStyle(isHovered ? .white.opacity(0.7) : .secondary)
+                }
                 Spacer()
                 Text(keyHint)
-                    .font(.system(size: 11, design: .monospaced))
-                    .foregroundColor(.secondary)
-                    .padding(.horizontal, 5)
-                    .padding(.vertical, 2)
-                    .background(Color(nsColor: .separatorColor).opacity(0.3))
-                    .clipShape(RoundedRectangle(cornerRadius: 3))
+                    .font(.caption)
+                    .frame(minWidth: 10, alignment: .center)
+                    .padding(3)
+                    .background(
+                        Color.secondary.opacity(isHovered ? 0.5 : 0.8),
+                        in: Capsule()
+                    )
+                    .foregroundStyle(.white)
             }
-            .padding(.horizontal, 12)
-            .padding(.vertical, 8)
+            .padding(.horizontal, 10)
+            .frame(minHeight: 28)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .foregroundStyle(isHovered ? .white : .primary)
+            .background(isHovered ? Color.accentColor.opacity(0.8) : .white.opacity(0.001))
+            .clipShape(RoundedRectangle(cornerRadius: 5))
+            .contentShape(Rectangle())
         }
-        .buttonStyle(ConvertButtonStyle(isRecommended: action.isRecommended))
-    }
-}
-
-struct ConvertButtonStyle: ButtonStyle {
-    let isRecommended: Bool
-
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .background(
-                isRecommended
-                    ? AnyShapeStyle(Color.accentColor)
-                    : AnyShapeStyle(Color(nsColor: .controlBackgroundColor))
-            )
-            .foregroundColor(isRecommended ? .white : .primary)
-            .clipShape(RoundedRectangle(cornerRadius: 8))
-            .opacity(configuration.isPressed ? 0.8 : 1.0)
+        .buttonStyle(.plain)
+        .onHover { hovering in
+            isHovered = hovering
+        }
     }
 }

@@ -6,13 +6,10 @@ struct PreviewView: View {
 
     var body: some View {
         Text(previewText)
-            .font(.system(size: 12, design: .monospaced))
-            .foregroundColor(.primary.opacity(0.8))
+            .font(.caption.monospaced())
+            .foregroundStyle(.secondary)
             .lineLimit(maxLines)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(10)
-            .background(Color(nsColor: .controlBackgroundColor))
-            .clipShape(RoundedRectangle(cornerRadius: 6))
     }
 
     private var previewText: String {

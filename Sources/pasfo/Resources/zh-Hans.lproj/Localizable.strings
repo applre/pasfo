@@ -1,0 +1,36 @@
+/* Badge */
+"badge.detected" = "检测到";
+
+/* Format labels */
+"format.boxDrawingTable" = "Box-drawing 表格";
+"format.markdownTable" = "Markdown 表格";
+"format.markdownMixed" = "Markdown 混合内容";
+"format.html" = "富文本";
+"format.terminalMixed" = "终端混合内容";
+"format.codeSnippet" = "代码片段";
+"format.plainText" = "纯文本";
+
+/* Action labels */
+"action.toAppleNotesHTML" = "富文本";
+"action.toMarkdownTable" = "Markdown 表格";
+"action.toMarkdown" = "Markdown";
+"action.toPlainText" = "纯文本";
+"action.toAppleNotesHighlighted" = "富文本 (高亮)";
+
+/* Content view */
+"clipboard.empty" = "剪贴板为空";
+"clipboard.plainTextNoConvert" = "纯文本，无需转换";
+
+/* Hints */
+"hint.keyboardShortcut" = "按下数字键快速转换格式";
+
+/* Footer */
+"footer.about" = "关于 Pasfo";
+"footer.quit" = "退出 Pasfo";
+
+/* Success messages */
+"success.richText" = "已转换为 Rich Text，可直接粘贴";
+"success.markdownTable" = "已转换为 Markdown 表格";
+"success.markdown" = "已转换为 Markdown";
+"success.plainText" = "已转换为纯文本";
+"success.highlighted" = "已转换为语法高亮 Rich Text";

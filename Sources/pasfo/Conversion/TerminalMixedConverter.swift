@@ -56,7 +56,7 @@ struct TerminalMixedConverter {
             let tag = i == 0 ? "th" : "td"
             let bg = i == 0 ? "background:#f5f5f5;font-weight:600;" : ""
             for cell in row {
-                html += "    <\(tag) style=\"border:1px solid #ccc;padding:6px 12px;\(bg)\">\(escapeHTML(cell))</\(tag)>\n"
+                html += "    <\(tag) style=\"border:1px solid #ccc;padding:6px 12px;\(bg)\">\(cell.escapingHTML())</\(tag)>\n"
             }
             html += "  </tr>\n"
         }
@@ -68,7 +68,7 @@ struct TerminalMixedConverter {
         let lines = text.components(separatedBy: .newlines)
         let rendered = lines.map { line -> String in
             let t = line.trimmingCharacters(in: .whitespaces)
-            let escaped = escapeHTML(line)
+            let escaped = line.escapingHTML()
             if t.hasPrefix("+++") || t.hasPrefix("---") {
                 return "<div style=\"color:#888;\">\(escaped)</div>"
             } else if t.hasPrefix("+") {
@@ -104,9 +104,9 @@ struct TerminalMixedConverter {
         var html = "<table style=\"border-collapse:collapse;\">\n"
         for row in rows {
             html += "  <tr>\n"
-            html += "    <td style=\"border:1px solid #ccc;padding:6px 12px;font-weight:600;background:#f5f5f5;white-space:nowrap;\">\(escapeHTML(row[0]))</td>\n"
+            html += "    <td style=\"border:1px solid #ccc;padding:6px 12px;font-weight:600;background:#f5f5f5;white-space:nowrap;\">\(row[0].escapingHTML())</td>\n"
             if row.count > 1 {
-                html += "    <td style=\"border:1px solid #ccc;padding:6px 12px;\">\(escapeHTML(row[1]))</td>\n"
+                html += "    <td style=\"border:1px solid #ccc;padding:6px 12px;\">\(row[1].escapingHTML())</td>\n"
             }
             html += "  </tr>\n"
         }
@@ -115,21 +115,21 @@ struct TerminalMixedConverter {
     }
 
     private static func renderCode(_ text: String) -> String {
-        let escaped = escapeHTML(text)
+        let escaped = text.escapingHTML()
         return """
         <pre style="background:#1e1e1e;color:#d4d4d4;padding:12px;border-radius:6px;font-family:'SF Mono',Menlo,monospace;font-size:13px;line-height:1.4;overflow-x:auto;">\(escaped)</pre>
         """
     }
 
     private static func renderShellCommand(_ text: String) -> String {
-        let escaped = escapeHTML(text)
+        let escaped = text.escapingHTML()
         return """
         <p style="margin:4px 0;"><code style="background:#f0f0f0;padding:2px 6px;border-radius:3px;font-family:'SF Mono',Menlo,monospace;font-size:13px;">\(escaped)</code></p>
         """
     }
 
     private static func renderPre(_ text: String) -> String {
-        let escaped = escapeHTML(text)
+        let escaped = text.escapingHTML()
         return """
         <pre style="background:#f5f5f5;padding:12px;border-radius:6px;font-family:'SF Mono',Menlo,monospace;font-size:13px;line-height:1.4;overflow-x:auto;">\(escaped)</pre>
         """
@@ -137,12 +137,7 @@ struct TerminalMixedConverter {
 
     private static func renderText(_ text: String) -> String {
         let lines = text.components(separatedBy: .newlines)
-        return lines.map { "<p style=\"margin:4px 0;\">\(escapeHTML($0))</p>" }.joined(separator: "\n")
+        return lines.map { "<p style=\"margin:4px 0;\">\($0.escapingHTML())</p>" }.joined(separator: "\n")
     }
 
-    private static func escapeHTML(_ text: String) -> String {
-        text.replacingOccurrences(of: "&", with: "&amp;")
-            .replacingOccurrences(of: "<", with: "&lt;")
-            .replacingOccurrences(of: ">", with: "&gt;")
-    }
 }
