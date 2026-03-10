@@ -6,7 +6,7 @@ struct PreviewView: View {
 
     var body: some View {
         Text(previewText)
-            .font(.body.monospaced())
+            .font(.body)
             .foregroundStyle(.primary.opacity(0.8))
             .lineSpacing(4)
             .lineLimit(maxLines)

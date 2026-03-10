@@ -7,19 +7,26 @@ struct FormatBadge: View {
 
     var body: some View {
         HStack(spacing: 6) {
-            // 应用图标
-            if let icon = appIcon(for: sourceAppBundleId) {
-                Image(nsImage: icon)
-                    .resizable()
-                    .frame(width: 20, height: 20)
-            }
-
-            // 格式标签（含应用名）
+            // 格式图标 + 格式名称
             tagView(
                 icon: format.iconName,
-                text: sourceAppName.map { "\($0) · \(format.label)" } ?? format.label,
+                text: format.label,
                 color: .orange
             )
+
+            // 应用图标 + 应用名称
+            if let bundleId = sourceAppBundleId, let icon = appIcon(for: bundleId) {
+                HStack(spacing: 3) {
+                    Image(nsImage: icon)
+                        .resizable()
+                        .frame(width: 14, height: 14)
+                    if let name = sourceAppName {
+                        Text(name)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+            }
 
             Spacer()
         }

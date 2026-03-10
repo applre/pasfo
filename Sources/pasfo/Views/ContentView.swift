@@ -6,6 +6,7 @@ struct ContentView: View {
     @State private var feedbackMessage: String?
     @State private var showFeedback = false
     @State private var dismissTask: Task<Void, Never>?
+    @State private var focusedIndex: Int = 0
 
     var body: some View {
         VStack(spacing: 0) {
@@ -43,7 +44,11 @@ struct ContentView: View {
                         ConvertButton(
                             action: action,
                             keyHint: "\(index + 1)",
-                            onConvert: { performConversion(action) }
+                            isHighlighted: focusedIndex == index,
+                            onConvert: { performConversion(action) },
+                            onHoverChanged: { hovering in
+                                if hovering { focusedIndex = index }
+                            }
                         )
                     }
                 }
@@ -70,17 +75,21 @@ struct ContentView: View {
 
             // Footer: About & Quit
             VStack(spacing: 0) {
-                footerButton(
+                menuItem(
                     title: String(localized: "footer.about", bundle: .module),
-                    shortcutHint: nil
+                    shortcutHint: nil,
+                    isHighlighted: focusedIndex == aboutIndex,
+                    onHover: { hovering in if hovering { focusedIndex = aboutIndex } }
                 ) {
                     NSApp.activate()
                     NSApp.orderFrontStandardAboutPanel()
                 }
 
-                footerButton(
+                menuItem(
                     title: String(localized: "footer.quit", bundle: .module),
-                    shortcutHint: "⌘Q"
+                    shortcutHint: "⌘Q",
+                    isHighlighted: focusedIndex == quitIndex,
+                    onHover: { hovering in if hovering { focusedIndex = quitIndex } }
                 ) {
                     NSApp.terminate(nil)
                 }
@@ -100,7 +109,13 @@ struct ContentView: View {
         .background(keyboardShortcuts)
     }
 
-    // Keyboard shortcuts: 1, 2 keys for quick selection, ⌘Q for quit
+    private var totalItemCount: Int {
+        detectedFormat.availableActions.count + 2 // actions + About + Quit
+    }
+
+    private var aboutIndex: Int { detectedFormat.availableActions.count }
+    private var quitIndex: Int { detectedFormat.availableActions.count + 1 }
+
     private var keyboardShortcuts: some View {
         Group {
             let actions = detectedFormat.availableActions
@@ -118,6 +133,25 @@ struct ContentView: View {
                     .opacity(0)
                     .accessibilityHidden(true)
             }
+            Button("") {
+                focusedIndex = (focusedIndex - 1 + totalItemCount) % totalItemCount
+            }
+                .keyboardShortcut(.upArrow, modifiers: [])
+                .frame(width: 0, height: 0)
+                .opacity(0)
+                .accessibilityHidden(true)
+            Button("") {
+                focusedIndex = (focusedIndex + 1) % totalItemCount
+            }
+                .keyboardShortcut(.downArrow, modifiers: [])
+                .frame(width: 0, height: 0)
+                .opacity(0)
+                .accessibilityHidden(true)
+            Button("") { executeFocusedItem() }
+                .keyboardShortcut(.return, modifiers: [])
+                .frame(width: 0, height: 0)
+                .opacity(0)
+                .accessibilityHidden(true)
             Button("") { NSApp.terminate(nil) }
                 .keyboardShortcut("q", modifiers: .command)
                 .frame(width: 0, height: 0)
@@ -126,9 +160,41 @@ struct ContentView: View {
         }
     }
 
+    private func executeFocusedItem() {
+        let actions = detectedFormat.availableActions
+        if focusedIndex < actions.count {
+            performConversion(actions[focusedIndex])
+        } else if focusedIndex == aboutIndex {
+            NSApp.activate()
+            NSApp.orderFrontStandardAboutPanel()
+        } else if focusedIndex == quitIndex {
+            NSApp.terminate(nil)
+        }
+    }
+
     @ViewBuilder
-    private func footerButton(title: String, shortcutHint: String?, action: @escaping () -> Void) -> some View {
-        HoverButton(title: title, shortcutHint: shortcutHint, action: action)
+    private func menuItem(title: String, shortcutHint: String?, isHighlighted: Bool, onHover: @escaping (Bool) -> Void, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            HStack {
+                Text(title)
+                    .font(.body)
+                Spacer()
+                if let hint = shortcutHint {
+                    Text(hint)
+                        .font(.body)
+                        .foregroundStyle(isHighlighted ? Color.white.opacity(0.7) : Color(nsColor: .tertiaryLabelColor))
+                }
+            }
+            .padding(.horizontal, 10)
+            .frame(minHeight: 28)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .foregroundStyle(isHighlighted ? .white : .primary)
+            .background(isHighlighted ? Color.accentColor.opacity(0.8) : Color.clear)
+            .clipShape(RoundedRectangle(cornerRadius: 5))
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .onHover(perform: onHover)
     }
 
     private func readClipboard() {
@@ -183,39 +249,6 @@ struct ContentView: View {
             let html = CodeHighlighter.toHTML(content.text)
             ClipboardWriter.writeHTML(html, fallbackText: content.text)
             showSuccess(String(localized: "success.highlighted", bundle: .module))
-        }
-    }
-
-    private struct HoverButton: View {
-        let title: String
-        let shortcutHint: String?
-        let action: () -> Void
-        @State private var isHovered = false
-
-        var body: some View {
-            Button(action: action) {
-                HStack {
-                    Text(title)
-                        .font(.body)
-                    Spacer()
-                    if let hint = shortcutHint {
-                        Text(hint)
-                            .font(.body)
-                            .foregroundStyle(isHovered ? Color.white.opacity(0.7) : Color(nsColor: .tertiaryLabelColor))
-                    }
-                }
-                .padding(.horizontal, 10)
-                .frame(minHeight: 28)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .foregroundStyle(isHovered ? .white : .primary)
-                .background(isHovered ? Color.accentColor.opacity(0.8) : Color.clear)
-                .clipShape(RoundedRectangle(cornerRadius: 5))
-                .contentShape(Rectangle())
-            }
-            .buttonStyle(.plain)
-            .onHover { hovering in
-                isHovered = hovering
-            }
         }
     }
 
