@@ -31,9 +31,6 @@ struct ContentView: View {
                     .padding(.vertical, 12)
             }
 
-            Divider()
-                .padding(.horizontal, 6)
-
             // Action buttons
             if detectedFormat == .plainText {
                 Text("clipboard.plainTextNoConvert", bundle: .module)

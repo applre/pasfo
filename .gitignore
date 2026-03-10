@@ -5,3 +5,13 @@ xcuserdata/
 DerivedData/
 .DS_Store
 docs/
+.agent/
+.agents/
+.claude/
+.iflow/
+.kiro/
+.trae/
+.windsurf/
+*.pen
+skills/
+skills-lock.json
