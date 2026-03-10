@@ -36,7 +36,7 @@ struct FormatBadge: View {
     private func tagView(icon: String, text: String, color: Color) -> some View {
         HStack(spacing: 3) {
             Image(systemName: icon)
-                .font(.caption2)
+                .font(.caption)
             Text(text)
                 .font(.caption)
         }

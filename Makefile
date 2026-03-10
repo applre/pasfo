@@ -10,6 +10,7 @@ build:
 	mkdir -p "$(APP_BUNDLE)/Contents/Resources"
 	cp $(BUILD_DIR)/release/$(APP_NAME) "$(APP_BUNDLE)/Contents/MacOS/"
 	cp Resources/Info.plist "$(APP_BUNDLE)/Contents/"
+	cp Resources/AppIcon.icns "$(APP_BUNDLE)/Contents/Resources/"
 
 run: build
 	open "$(APP_BUNDLE)"
@@ -21,6 +22,7 @@ debug:
 	mkdir -p "$(APP_BUNDLE)/Contents/Resources"
 	cp $(BUILD_DIR)/debug/$(APP_NAME) "$(APP_BUNDLE)/Contents/MacOS/"
 	cp Resources/Info.plist "$(APP_BUNDLE)/Contents/"
+	cp Resources/AppIcon.icns "$(APP_BUNDLE)/Contents/Resources/"
 	open "$(APP_BUNDLE)"
 
 test:

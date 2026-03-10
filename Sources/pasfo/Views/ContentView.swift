@@ -12,7 +12,7 @@ struct ContentView: View {
             // Header: format badge
             FormatBadge(format: detectedFormat, sourceAppName: clipboardContent?.sourceAppName, sourceAppBundleId: clipboardContent?.sourceAppBundleId)
                 .padding(.horizontal, 10)
-                .padding(.top, 8)
+                .padding(.top, 5)
                 .padding(.bottom, 6)
 
             Divider()
@@ -21,11 +21,11 @@ struct ContentView: View {
             // Preview
             if let content = clipboardContent {
                 PreviewView(text: content.text)
-                    .padding(.horizontal, 10)
-                    .padding(.bottom, 6)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 10)
             } else {
                 Text("clipboard.empty", bundle: .module)
-                    .font(.callout)
+                    .font(.caption)
                     .foregroundStyle(.secondary)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 12)
@@ -34,7 +34,7 @@ struct ContentView: View {
             // Action buttons
             if detectedFormat == .plainText {
                 Text("clipboard.plainTextNoConvert", bundle: .module)
-                    .font(.callout)
+                    .font(.caption)
                     .foregroundStyle(.secondary)
                     .padding(.vertical, 10)
             } else {
@@ -56,9 +56,9 @@ struct ContentView: View {
                 HStack(spacing: 4) {
                     Image(systemName: "checkmark.circle.fill")
                         .foregroundStyle(.green)
-                        .font(.callout)
+                        .font(.caption)
                     Text(message)
-                        .font(.callout)
+                        .font(.caption)
                         .foregroundStyle(.secondary)
                 }
                 .padding(.bottom, 6)
@@ -89,6 +89,7 @@ struct ContentView: View {
             .padding(.vertical, 5)
         }
         .frame(width: 300)
+        .ignoresSafeArea()
         .onAppear(perform: readClipboard)
         .onReceive(NotificationCenter.default.publisher(for: NSApplication.willBecomeActiveNotification)) { _ in
             readClipboard()
@@ -199,15 +200,15 @@ struct ContentView: View {
                     Spacer()
                     if let hint = shortcutHint {
                         Text(hint)
-                            .font(.caption)
-                            .foregroundStyle(isHovered ? Color.white.opacity(0.7) : Color.secondary)
+                            .font(.body)
+                            .foregroundStyle(isHovered ? Color.white.opacity(0.7) : Color(nsColor: .tertiaryLabelColor))
                     }
                 }
                 .padding(.horizontal, 10)
                 .frame(minHeight: 28)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .foregroundStyle(isHovered ? .white : .primary)
-                .background(isHovered ? Color.accentColor.opacity(0.8) : .white.opacity(0.001))
+                .background(isHovered ? Color.accentColor.opacity(0.8) : Color.clear)
                 .clipShape(RoundedRectangle(cornerRadius: 5))
                 .contentShape(Rectangle())
             }
